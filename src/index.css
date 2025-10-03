@@ -1,0 +1,63 @@
+/* PLEASE NOTE: THESE TAILWIND IMPORTS SHOULD NEVER BE DELETED */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* DO NOT DELETE THESE TAILWIND IMPORTS, OTHERWISE THE STYLING WILL NOT RENDER AT ALL */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+/* Base styles */
+body {
+  @apply font-sans text-gray-800 bg-cream;
+}
+h1, h2, h3, h4, h5, h6 {
+  @apply font-serif;
+}
+/* Custom utility classes */
+.container-custom {
+  @apply container mx-auto px-4 md:px-6 lg:px-8;
+}
+.islamic-pattern {
+  background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+  background-repeat: repeat;
+  background-size: 300px;
+  opacity: 0.1;
+}
+/* Button styles */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-medium transition-all duration-300;
+}
+.btn-primary {
+  @apply bg-emerald text-white hover:bg-emerald-light;
+}
+.btn-secondary {
+  @apply bg-burgundy text-white hover:bg-burgundy-light;
+}
+.btn-outlined {
+  @apply border-2 border-emerald text-emerald hover:bg-emerald hover:text-white;
+}
+.btn-gold {
+  @apply bg-gold text-navy hover:bg-gold-light;
+}
+/* Product card styles */
+.product-card {
+  @apply bg-white rounded-md overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md;
+}
+/* Form control styles */
+.form-control {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald focus:border-transparent;
+}
+/* Islamic decorative elements */
+.islamic-divider {
+  @apply relative flex items-center justify-center my-8;
+}
+.islamic-divider::before,
+.islamic-divider::after {
+  content: "";
+  @apply block h-px bg-gold flex-grow mx-4;
+}
+.islamic-divider::before {
+  background: linear-gradient(to right, transparent, theme('colors.gold.DEFAULT'));
+}
+.islamic-divider::after {
+  background: linear-gradient(to left, transparent, theme('colors.gold.DEFAULT'));
+}
