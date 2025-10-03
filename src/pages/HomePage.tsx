@@ -181,8 +181,8 @@ const HomePage = () => {
               </a>)}
           </div>
           <div className="mt-6 text-center">
-            <a href="#" className="text-navy hover:text-emerald font-medium flex items-center justify-center" onClick={e => e.preventDefault()}>
-              @ModestElegance <ArrowRightIcon size={16} className="ml-1" />
+            <a href="https://www.instagram.com/bisma.abayas" className="text-navy hover:text-emerald font-medium flex items-center justify-center" onClick={e => e.preventDefault()}>
+              @bisma.abayas <ArrowRightIcon size={16} className="ml-1" />
             </a>
           </div>
         </div>

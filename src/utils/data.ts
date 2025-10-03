@@ -5,7 +5,7 @@ export const products = [{
   name: 'Premium Silk Hijab - Emerald Green',
   price: 39.99,
   originalPrice: 49.99,
-  images: ['https://images.unsplash.com/photo-1623060386759-6e8a5067c2c4?q=80&w=2787&auto=format&fit=crop', 'https://images.unsplash.com/photo-1614689540269-1f9da47db171?q=80&w=2787&auto=format&fit=crop', 'https://images.unsplash.com/photo-1611507929918-08ee0bcbc4ab?q=80&w=2787&auto=format&fit=crop'],
+  images: ['https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg', 'https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg', 'https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg'],
   description: 'Luxurious 100% silk hijab in a stunning emerald green shade. This premium quality hijab drapes beautifully and adds an elegant touch to any outfit. The lightweight fabric ensures comfort all day long.',
   category: 'hijabs',
   subcategory: 'silk',
@@ -22,7 +22,7 @@ export const products = [{
   id: 'chiffon-pleated-hijab-burgundy',
   name: 'Pleated Chiffon Hijab - Burgundy',
   price: 24.99,
-  images: ['https://images.unsplash.com/photo-1608042314453-ae338d80c427?q=80&w=2560&auto=format&fit=crop', 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?q=80&w=2786&auto=format&fit=crop'],
+  images: ['https://i.pinimg.com/1200x/8b/be/3c/8bbe3c125132b2a178d6040b76cb8e6e.jpg', 'https://i.pinimg.com/1200x/8b/be/3c/8bbe3c125132b2a178d6040b76cb8e6e.jpg'],
   description: "Elegant pleated chiffon hijab in a rich burgundy color. The pleated texture adds dimension and style while remaining easy to style. Made from high-quality chiffon that's both breathable and durable.",
   category: 'hijabs',
   subcategory: 'chiffon',
@@ -39,7 +39,7 @@ export const products = [{
   id: 'jersey-hijab-navy',
   name: 'Premium Jersey Hijab - Navy',
   price: 19.99,
-  images: ['https://images.unsplash.com/photo-1577035695667-9a95f4d9c6d9?q=80&w=2787&auto=format&fit=crop', 'https://images.unsplash.com/photo-1627225924765-552d49cf47ad?q=80&w=2787&auto=format&fit=crop'],
+  images: ['https://i.pinimg.com/1200x/8b/be/3c/8bbe3c125132b2a178d6040b76cb8e6e.jpg', 'https://i.pinimg.com/1200x/8b/be/3c/8bbe3c125132b2a178d6040b76cb8e6e.jpg'],
   description: "Comfortable and versatile jersey hijab in classic navy. Perfect for everyday wear with its soft, stretchy fabric that's easy to style. The premium quality ensures it maintains its shape all day.",
   category: 'hijabs',
   subcategory: 'jersey',
@@ -74,7 +74,7 @@ export const products = [{
   name: 'Premium Black Abaya with Gold Embroidery',
   price: 129.99,
   originalPrice: 159.99,
-  images: ['https://images.unsplash.com/photo-1598449426314-8b02525e8733?q=80&w=2864&auto=format&fit=crop', 'https://images.unsplash.com/photo-1561948955-570b270e7c36?q=80&w=2601&auto=format&fit=crop'],
+  images: ['https://i.pinimg.com/736x/ec/0b/22/ec0b22a0dbdb526c1ca00ab2c5fb3fd0.jpg', 'https://i.pinimg.com/736x/ec/0b/22/ec0b22a0dbdb526c1ca00ab2c5fb3fd0.jpg'],
   description: 'Elegant black abaya with intricate gold embroidery details. Made from high-quality crepe fabric that drapes beautifully and ensures comfort. The subtle gold embellishments add a touch of luxury to this modest piece.',
   category: 'abayas',
   subcategory: 'embroidered',
@@ -144,7 +144,7 @@ export const products = [{
   name: 'Modal Fabric Underscarves Set - 3 Pack',
   price: 24.99,
   originalPrice: 29.99,
-  images: ['https://images.unsplash.com/photo-1586078130702-d208859b6223?q=80&w=2864&auto=format&fit=crop', 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=2787&auto=format&fit=crop'],
+  images: ['https://i.pinimg.com/736x/08/52/ff/0852ffb0558fb5a36c7dca43985d53ae.jpg', 'https://i.pinimg.com/1200x/8c/33/07/8c3307508b7f9acf30fe8af830b0b2e2.jpg'],
   description: 'Set of three comfortable modal fabric underscarves in essential colors (black, navy, cream). The soft, stretchy material provides excellent coverage and grip to keep your hijab in place all day.',
   category: 'underscarves',
   subcategory: 'basic',
@@ -213,26 +213,57 @@ export const categories = [{
   name: 'Hijabs',
   description: 'Beautiful hijabs in various fabrics, colors, and styles',
   image: 'https://i.pinimg.com/736x/f8/39/34/f83934646d804083217bede84bc0d82f.jpg',
-  subcategories: ['silk', 'chiffon', 'jersey', 'cotton', 'prints', 'occasion']
+  subcategories: [
+    'silk',
+    'chiffon',
+    'jersey',
+    'cotton',
+    'prints',
+    'occasion',
+    'matching-hijabs' // hijabs included in abaya sets
+  ]
 }, {
   id: 'abayas',
   name: 'Abayas',
   description: 'Elegant abayas for every occasion',
   image: 'https://i.pinimg.com/1200x/b0/53/12/b05312ed9e8a28691d6655a95fb1427f.jpg',
-  subcategories: ['casual', 'formal', 'embroidered', 'modern', 'everyday']
+  subcategories: [
+    'casual',
+    'formal',
+    'embroidered',  // handmade / handwork abayas
+    'modern',
+    'everyday',
+    'sets',         // abaya + hijab or abaya + inner dress
+    'custom'        // made-to-order pieces
+  ]
 }, {
   id: 'modest-wear',
   name: 'Modest Wear',
   description: 'Stylish modest clothing for everyday elegance',
-  image: 'https://images.unsplash.com/photo-1581699216404-d189a8430190?q=80&w=2787&auto=format&fit=crop',
-  subcategories: ['dresses', 'sets', 'tops', 'skirts', 'prayer-sets']
+  image: 'https://i.pinimg.com/1200x/c8/1d/44/c81d4410121927429b0f5046164a3708.jpg',
+  subcategories: [
+    'dresses',      // Mina abaya, everyday modest dresses
+    'sets',         // 2-piece / 3-piece coordinated modest sets
+    'tops',
+    'skirts',
+    'prayer-sets'   // for salah / special modest wear
+  ]
 }, {
   id: 'accessories',
   name: 'Accessories',
   description: 'Complete your look with our beautiful accessories',
   image: 'https://i.pinimg.com/736x/c6/04/d0/c604d0568c80e89a28002863b7262189.jpg',
-  subcategories: ['pins', 'volumizers', 'caps', 'underscarves', 'jewelry']
+  subcategories: [
+    'pins',
+    'volumizers',
+    'caps',
+    'underscarves',
+    'jewelry',
+    'belts',        // waist belts for abayas
+    'bags'          // sometimes paired with modest fashion
+  ]
 }];
+
 // Collections
 export const collections = [{
   id: 'new-arrivals',
