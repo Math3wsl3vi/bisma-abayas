@@ -79,7 +79,7 @@ const HomePage = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bestsellers.slice(0, 4).map(product => <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} originalPrice={product.originalPrice} image={product.images[0]} rating={product.rating} isNew={product.isNew} isBestseller={product.isBestseller} />)}
+            {bestsellers.slice(0, 4).map(product => <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} originalPrice={product.originalPrice} image={product.images[0]} rating={product.rating} isNew={product.isNew} isBestseller={product.isBestseller} sku={''} category={''} subcategory={''} />)}
           </div>
           <div className="mt-10 text-center">
             <Link to="/collections/bestsellers" className="btn btn-outlined">
@@ -115,7 +115,7 @@ const HomePage = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {newArrivals.slice(0, 4).map(product => <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} originalPrice={product.originalPrice} image={product.images[0]} rating={product.rating} isNew={product.isNew} isBestseller={product.isBestseller} />)}
+            {newArrivals.slice(0, 4).map(product => <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} originalPrice={product.originalPrice} image={product.images[0]} rating={product.rating} isNew={product.isNew} isBestseller={product.isBestseller} sku={''} category={''} subcategory={''} />)}
           </div>
           <div className="mt-10 text-center">
             <Link to="/collections/new-arrivals" className="btn btn-outlined">

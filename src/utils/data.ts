@@ -5,7 +5,7 @@ export const products = [{
   name: 'Premium Silk Hijab - Emerald Green',
   price: 39.99,
   originalPrice: 49.99,
-  images: ['https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg', 'https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg', 'https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg'],
+  images: ['https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg', 'https://i.pinimg.com/1200x/79/2f/b3/792fb37c43b60235d46d6a503762a4db.jpg', 'https://i.pinimg.com/1200x/8a/51/c3/8a51c325c656f1a909b6eb0c52921579.jpg'],
   description: 'Luxurious 100% silk hijab in a stunning emerald green shade. This premium quality hijab drapes beautifully and adds an elegant touch to any outfit. The lightweight fabric ensures comfort all day long.',
   category: 'hijabs',
   subcategory: 'silk',

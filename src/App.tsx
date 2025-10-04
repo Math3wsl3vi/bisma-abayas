@@ -6,10 +6,17 @@ import HomePage from './pages/HomePage';
 import ProductListingPage from './pages/ProductListingPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
+import CheckoutPage from './pages/CheckoutPage';
+import { AdminRoute } from './components/admin/AdminRoute';
+import { AdminLogin } from './components/admin/AdminLogin';
 export function App() {
+
+  const handleAdminLogin = () => {
+    // This function can be empty since the login logic is handled in AdminLogin component
+  };
+  
   return <BrowserRouter>
       <div className="flex flex-col min-h-screen bg-cream">
         <Header />
@@ -22,6 +29,13 @@ export function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
             <Route path="/order-tracking" element={<OrderTrackingPage />} />
+
+            {/* admin routes  */}
+             <Route path="/admin" element={<AdminRoute />} />
+              <Route
+                path="/admin/login"
+                element={<AdminLogin onLogin={handleAdminLogin} />}
+              />
           </Routes>
         </main>
         <Footer />
