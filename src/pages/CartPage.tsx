@@ -125,7 +125,7 @@ const CartPage = () => {
                             )}
                             <div className="flex mt-2 md:hidden">
                               <span className="text-burgundy font-medium">
-                                ${item.price.toFixed(2)}
+                                Ksh {item.price.toLocaleString()}
                               </span>
                             </div>
                             <div className="flex space-x-4 mt-3">
@@ -148,11 +148,11 @@ const CartPage = () => {
                         {/* Price - desktop */}
                         <div className="hidden md:flex md:w-1/6 items-center justify-center">
                           <span className="text-burgundy font-medium">
-                            ${item.price.toFixed(2)}
+                            Ksh {item.price.toLocaleString()}
                           </span>
                           {item.originalPrice && item.originalPrice > item.price && (
                             <span className="text-sm text-gray-500 line-through ml-2">
-                              ${item.originalPrice.toFixed(2)}
+                              Ksh {item.originalPrice.toLocaleString()}
                             </span>
                           )}
                         </div>
@@ -186,14 +186,14 @@ const CartPage = () => {
                         {/* Subtotal - desktop */}
                         <div className="hidden md:flex md:w-1/6 items-center justify-center">
                           <span className="font-medium">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            Ksh {(item.price * item.quantity).toLocaleString()}
                           </span>
                         </div>
                         {/* Mobile price & subtotal */}
                         <div className="flex justify-between items-center mt-4 md:hidden">
                           <div className="text-sm text-gray-500">Subtotal:</div>
                           <div className="font-medium">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            Ksh {(item.price * item.quantity).toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -222,28 +222,29 @@ const CartPage = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>Ksh {subtotal.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Shipping</span>
                       <span>
-                        {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                        {shipping === 0 ? 'Free' : `Ksh ${shipping.toLocaleString()}`}
                       </span>
                     </div>
                     {promoApplied && (
                       <div className="flex justify-between text-emerald">
                         <span>Discount (10%)</span>
-                        <span>-${discount.toFixed(2)}</span>
+                        <span>-Ksh {discount.toLocaleString()}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <span className="text-gray-600">Estimated Tax</span>
-                      <span>${tax.toFixed(2)}</span>
+                      <span>Ksh {tax.toLocaleString()}</span>
                     </div>
                     <div className="border-t border-gray-200 pt-3 flex justify-between font-medium">
                       <span>Total</span>
-                      <span className="text-burgundy">${total.toFixed(2)}</span>
+                      <span className="text-burgundy">Ksh {total.toLocaleString()}</span>
                     </div>
+
                   </div>
                   {/* Promo Code */}
                   <div className="mb-6">
@@ -306,7 +307,7 @@ const CartPage = () => {
                   <p className="text-sm text-gray-600 mt-1">
                     {subtotal >= 75
                       ? 'Your order qualifies for free shipping!'
-                      : `Add $${(75 - subtotal).toFixed(2)} more to qualify for free shipping.`}
+                      : `Add $${(75 - subtotal).toLocaleString()} more to qualify for free shipping.`}
                   </p>
                 </div>
               </div>

@@ -470,7 +470,7 @@ const handlePlaceOrder = async () => {
                         <div className="flex-1">
                           <div className="flex justify-between">
                             <span className="font-medium">Express Shipping</span>
-                            <span className="font-medium">$12.99</span>
+                            <span className="font-medium">Ksh 1200</span>
                           </div>
                           <p className="text-sm text-gray-500 mt-1">2-3 business days</p>
                           <p className="text-sm text-emerald mt-1">
@@ -494,7 +494,7 @@ const handlePlaceOrder = async () => {
                         <div className="flex-1">
                           <div className="flex justify-between">
                             <span className="font-medium">Overnight Shipping</span>
-                            <span className="font-medium">$24.99</span>
+                            <span className="font-medium">Ksh 1300</span>
                           </div>
                           <p className="text-sm text-gray-500 mt-1">1 business day</p>
                           <p className="text-sm text-emerald mt-1">
@@ -749,7 +749,7 @@ const handlePlaceOrder = async () => {
                             <p className="font-medium text-sm print:text-xs">{item.product_name}</p>
                             <p className="text-sm text-gray-500 print:text-xs">Qty: {item.quantity}</p>
                             <p className="font-medium text-sm print:text-xs">
-                              ${(item.unit_price * item.quantity).toFixed(2)}
+                              Ksh {(item.unit_price * item.quantity).toFixed(2)}
                             </p>
                           </div>
                         </div>
@@ -758,7 +758,7 @@ const handlePlaceOrder = async () => {
                     <div className="border-t border-gray-200 pt-4 print:pt-2">
                       <div className="flex justify-between text-lg font-semibold print:text-base">
                         <span>Total</span>
-                        <span>${orderDetails.total_amount.toFixed(2)}</span>
+                        <span>Ksh {orderDetails.total_amount.toFixed(2)}</span>
                       </div>
                     </div>
                     <div className="flex gap-4 print:hidden">
@@ -799,7 +799,7 @@ const handlePlaceOrder = async () => {
                           <p className="text-xs text-gray-500 mt-1">Size: {item.size}</p>
                           <p className="text-xs text-gray-500 mt-1">Color: {item.color}</p>
                           <p className="text-xs text-gray-500 mt-1">Quantity: {item.quantity}</p>
-                          <p className="text-sm text-burgundy mt-1">${(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="text-sm text-burgundy mt-1">Ksh{(item.price * item.quantity).toFixed(2)}</p>
                         </div>
                       </div>
                     ))}
@@ -808,22 +808,22 @@ const handlePlaceOrder = async () => {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Subtotal</span>
-                    <span>${cartSummary.subtotal.toFixed(2)}</span>
+                    <span>Ksh {cartSummary.subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Shipping</span>
-                    <span>${getShippingCost(shippingMethod).toFixed(2)}</span>
+                    <span>Ksh {getShippingCost(shippingMethod).toFixed(2)}</span>
                   </div>
                   {cartSummary.totalDiscount > 0 && (
                     <div className="flex justify-between text-sm text-emerald">
                       <span>Discount</span>
-                      <span>-${cartSummary.totalDiscount.toFixed(2)}</span>
+                      <span>-Ksh {cartSummary.totalDiscount.toFixed(2)}</span>
                     </div>
                   )}
                 </div>
                 <div className="flex justify-between font-medium border-t border-gray-200 pt-4">
                   <span>Total</span>
-                  <span className="text-burgundy">${(cartSummary.total + getShippingCost(shippingMethod)).toFixed(2)}</span>
+                  <span className="text-burgundy">Ksh {(cartSummary.total + getShippingCost(shippingMethod)).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -881,7 +881,7 @@ const handlePlaceOrder = async () => {
                     <h3 className="font-medium">Payment Method</h3>
                     <div className="mt-2 text-sm text-gray-600">
                       {paymentInfo.paymentMethod === 'credit-card' && (
-                        <p>Credit Card {paymentInfo.cardNumber && `(**** ${paymentInfo.cardNumber.slice(-4)})`}</p>
+                        <p>Credit Card {paymentInfo.cardNumber && `(**** Ksh {paymentInfo.cardNumber.slice(-4)})`}</p>
                       )}
                       {paymentInfo.paymentMethod === 'paypal' && <p>PayPal</p>}
                       {paymentInfo.paymentMethod === 'apple-pay' && <p>Apple Pay</p>}

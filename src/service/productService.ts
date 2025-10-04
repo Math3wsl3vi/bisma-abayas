@@ -65,7 +65,7 @@ export class ProductsService {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   static async getProductsBySubcategory(category: string, subcategory: string): Promise<Product[]> {
@@ -78,7 +78,7 @@ export class ProductsService {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   static async getFeaturedProducts(): Promise<Product[]> {
@@ -91,7 +91,7 @@ export class ProductsService {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   static async getNewArrivals(): Promise<Product[]> {
@@ -104,7 +104,7 @@ export class ProductsService {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   static async getProductsByBrand(brand: string): Promise<Product[]> {
@@ -116,7 +116,7 @@ export class ProductsService {
       .order('price', { ascending: true })
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   static async searchProducts(query: string): Promise<Product[]> {
@@ -128,7 +128,7 @@ export class ProductsService {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   // Helper method to transform database product to frontend product structure
@@ -137,8 +137,8 @@ export class ProductsService {
       id: dbProduct.id,
       name: dbProduct.name,
       description: dbProduct.description,
-      price: dbProduct.price,
-      originalPrice: dbProduct.original_price || dbProduct.price,
+      price: dbProduct.price / 100, // Convert from cents to dollars
+      originalPrice: dbProduct.original_price ? dbProduct.original_price / 100 : undefined,
       images: dbProduct.images || [dbProduct.image_url].filter(Boolean),
       category: dbProduct.category,
       subcategory: dbProduct.subcategory,
@@ -169,7 +169,7 @@ export class ProductsService {
       .eq('is_active', true)
 
     if (error) throw error
-    return (data || []).map(product => this.transformProduct(data))
+    return (data || []).map(product => this.transformProduct(product)) // Fixed: was this.transformProduct(data)
   }
 
   // Method to check product availability

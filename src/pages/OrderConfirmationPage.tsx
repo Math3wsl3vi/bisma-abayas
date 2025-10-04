@@ -202,14 +202,14 @@ const OrderConfirmationPage = () => {
                               {item.product_name}
                             </h3>
                             <span className="font-medium">
-                              ${(item.unit_price * item.quantity).toFixed(2)}
+                              Ksh {(item.unit_price * item.quantity).toFixed(2)}
                             </span>
                           </div>
                           <p className="text-sm text-gray-600 mt-1">
                             Quantity: {item.quantity}
                           </p>
                           <p className="text-sm text-gray-600 mt-1">
-                            Price: ${item.unit_price.toFixed(2)} each
+                            Price: Ksh {item.unit_price.toFixed(2)} each
                           </p>
                           {item.size && (
                             <p className="text-sm text-gray-600 mt-1">
@@ -262,23 +262,23 @@ const OrderConfirmationPage = () => {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Subtotal</span>
-                        <span>${subtotal.toFixed(2)}</span>
+                        <span>Ksh{subtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Shipping</span>
-                        <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                        <span>{shipping === 0 ? 'Free' : `Ksh ${shipping.toFixed(2)}`}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Tax</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>Ksh {tax.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-emerald">
                         <span>Discount</span>
-                        <span>-${discount.toFixed(2)}</span>
+                        <span>-Ksh {discount.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between font-medium text-base pt-2 border-t border-gray-200">
                         <span>Total</span>
-                        <span className="text-burgundy">${total.toFixed(2)}</span>
+                        <span className="text-burgundy">Ksh {total.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

@@ -1,14 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRightIcon, InstagramIcon } from 'lucide-react';
 import ProductCard from '../components/ui/ProductCard';
-import { products, categories, testimonials, collections } from '../utils/data';
+import { categories, testimonials, collections } from '../utils/data';
+import { Product, ProductsService } from '../service/productService';
+
 const HomePage = () => {
-  // Get bestseller products
-  const bestsellers = products.filter(product => product.isBestseller);
-  // Get new arrivals
-  const newArrivals = products.filter(product => product.isNew);
-  return <div className="bg-cream">
+  const [bestsellers, setBestsellers] = useState<Product[]>([]);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [loadingBestsellers, setLoadingBestsellers] = useState(true);
+  const [loadingNewArrivals, setLoadingNewArrivals] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+       try {
+      setLoadingBestsellers(true);
+      console.log('Fetching bestsellers from Supabase...');
+      const bestsellerData = await ProductsService.getFeaturedProducts();
+      console.log('Raw bestsellers response:', bestsellerData);
+      
+      if (bestsellerData && bestsellerData.length > 0) {
+        console.log('First bestseller product:', bestsellerData[0]);
+        console.log('First product image URL:', bestsellerData[0].images?.[0]);
+      }
+      
+      setBestsellers(bestsellerData);
+    } catch (err) {
+      console.error('Detailed error fetching bestsellers:', err);
+      setError('Failed to load bestsellers. Please try again later.');
+    } finally {
+      setLoadingBestsellers(false);
+    }
+
+
+      try {
+        // Fetch new arrivals
+        setLoadingNewArrivals(true);
+        const newArrivalsData = await ProductsService.getNewArrivals();
+        setNewArrivals(newArrivalsData);
+      } catch (err) {
+        setError('Failed to load new arrivals. Please try again later.');
+        console.error('Error fetching new arrivals:', err);
+      } finally {
+        setLoadingNewArrivals(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  return (
+    <div className="bg-cream">
       {/* Hero Section */}
       <section className="relative bg-navy text-white">
         <div className="absolute inset-0 islamic-pattern opacity-10"></div>
@@ -33,7 +76,11 @@ const HomePage = () => {
             </div>
             <div className="md:w-1/2">
               <div className="relative">
-                <img src="https://i.pinimg.com/1200x/18/ba/d5/18bad55a778b3783e4570b111270c3dc.jpg" alt="Modest Elegance Collection" className="rounded-lg shadow-lg w-full h-auto" />
+                <img
+                  src="https://i.pinimg.com/1200x/18/ba/d5/18bad55a778b3783e4570b111270c3dc.jpg"
+                  alt="Modest Elegance Collection"
+                  className="rounded-lg shadow-lg w-full h-auto"
+                />
                 <div className="absolute -bottom-6 -right-6 bg-burgundy text-white p-4 rounded-lg shadow-lg hidden md:block">
                   <p className="font-serif text-lg">Premium Quality</p>
                   <p className="text-sm">Ethically Sourced Materials</p>
@@ -43,6 +90,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       {/* Featured Categories */}
       <section className="py-16 bg-white">
         <div className="container-custom">
@@ -52,24 +100,29 @@ const HomePage = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map(category => <Link to={`/category/${category.id}`} key={category.id} className="relative group overflow-hidden rounded-lg shadow-md">
+            {categories.map((category) => (
+              <Link to={`/category/${category.id}`} key={category.id} className="relative group overflow-hidden rounded-lg shadow-md">
                 <div className="aspect-w-1 aspect-h-1">
-                  <img src={category.image} alt={category.name} className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-navy to-transparent opacity-70"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                   <h3 className="font-serif text-xl mb-1">{category.name}</h3>
-                  <p className="text-sm text-gray-200 mb-2">
-                    {category.description}
-                  </p>
+                  <p className="text-sm text-gray-200 mb-2">{category.description}</p>
                   <span className="inline-flex items-center text-gold hover:text-gold-light text-sm font-medium">
                     Shop Now <ArrowRightIcon size={16} className="ml-1" />
                   </span>
                 </div>
-              </Link>)}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
+
       {/* Bestsellers */}
       <section className="py-16 bg-cream">
         <div className="container-custom">
@@ -78,9 +131,40 @@ const HomePage = () => {
               Bestsellers
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bestsellers.slice(0, 4).map(product => <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} originalPrice={product.originalPrice} image={product.images[0]} rating={product.rating} isNew={product.isNew} isBestseller={product.isBestseller} sku={''} category={''} subcategory={''} />)}
-          </div>
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-center">
+              {error}
+            </div>
+          )}
+          {loadingBestsellers ? (
+            <div className="text-center">
+              <div className="w-8 h-8 border-4 border-navy border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading bestsellers...</p>
+            </div>
+          ) : bestsellers.length === 0 ? (
+            <div className="text-center">
+              <p className="text-gray-600">No bestsellers available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {bestsellers.slice(0, 4).map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  originalPrice={product.originalPrice}
+                  image={product.images[0]}
+                  rating={product.rating}
+                  isNew={product.isNew}
+                  isBestseller={product.isBestseller}
+                  sku={product.sku}
+                  category={product.category}
+                  subcategory={product.subcategory}
+                />
+              ))}
+            </div>
+          )}
           <div className="mt-10 text-center">
             <Link to="/collections/bestsellers" className="btn btn-outlined">
               View All Bestsellers
@@ -88,6 +172,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       {/* Banner */}
       <section className="py-12 bg-burgundy text-white">
         <div className="container-custom">
@@ -106,6 +191,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       {/* New Arrivals */}
       <section className="py-16 bg-white">
         <div className="container-custom">
@@ -114,9 +200,40 @@ const HomePage = () => {
               New Arrivals
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {newArrivals.slice(0, 4).map(product => <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} originalPrice={product.originalPrice} image={product.images[0]} rating={product.rating} isNew={product.isNew} isBestseller={product.isBestseller} sku={''} category={''} subcategory={''} />)}
-          </div>
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-center">
+              {error}
+            </div>
+          )}
+          {loadingNewArrivals ? (
+            <div className="text-center">
+              <div className="w-8 h-8 border-4 border-navy border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading new arrivals...</p>
+            </div>
+          ) : newArrivals.length === 0 ? (
+            <div className="text-center">
+              <p className="text-gray-600">No new arrivals available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {newArrivals.slice(0, 4).map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  originalPrice={product.originalPrice}
+                  image={product.images[0]}
+                  rating={product.rating}
+                  isNew={product.isNew}
+                  isBestseller={product.isBestseller}
+                  sku={product.sku}
+                  category={product.category}
+                  subcategory={product.subcategory}
+                />
+              ))}
+            </div>
+          )}
           <div className="mt-10 text-center">
             <Link to="/collections/new-arrivals" className="btn btn-outlined">
               View All New Arrivals
@@ -124,6 +241,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       {/* Testimonials */}
       <section className="py-16 bg-cream">
         <div className="container-custom">
@@ -133,24 +251,36 @@ const HomePage = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {testimonials.slice(0, 2).map(testimonial => <div key={testimonial.id} className="bg-white p-6 rounded-lg shadow-sm">
+            {testimonials.slice(0, 2).map((testimonial) => (
+              <div key={testimonial.id} className="bg-white p-6 rounded-lg shadow-sm">
                 <div className="flex items-center mb-4">
-                  <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
                   <div className="ml-4">
                     <h4 className="font-medium">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-500">
-                      {testimonial.location}
-                    </p>
+                    <p className="text-sm text-gray-500">{testimonial.location}</p>
                   </div>
                   <div className="ml-auto flex">
-                    {[...Array(5)].map((_, i) => <svg key={i} xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${i < testimonial.rating ? 'text-gold' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 24 24">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-4 w-4 ${i < testimonial.rating ? 'text-gold' : 'text-gray-300'}`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                      </svg>)}
+                      </svg>
+                    ))}
                   </div>
                 </div>
                 <p className="text-gray-700 italic">"{testimonial.text}"</p>
                 <p className="mt-4 text-xs text-gray-500">{testimonial.date}</p>
-              </div>)}
+              </div>
+            ))}
           </div>
           <div className="mt-10 text-center">
             <Link to="/testimonials" className="btn btn-outlined">
@@ -159,6 +289,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       {/* Instagram Feed */}
       <section className="py-16 bg-white">
         <div className="container-custom">
@@ -171,22 +302,33 @@ const HomePage = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-            {[...Array(6)].map((_, i) => <a key={i} href="#" className="relative group overflow-hidden" onClick={e => e.preventDefault()}>
-                <img src={products[i % products.length].images[0]} alt="Instagram post" className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110" />
+            {bestsellers.slice(0, 6).map((product, i) => (
+              <a key={i} href="#" className="relative group overflow-hidden" onClick={(e) => e.preventDefault()}>
+                <img
+                  src={product.images[0]}
+                  alt="Instagram post"
+                  className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-navy bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
                   <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <InstagramIcon size={24} />
                   </span>
                 </div>
-              </a>)}
+              </a>
+            ))}
           </div>
           <div className="mt-6 text-center">
-            <a href="https://www.instagram.com/bisma.abayas" className="text-navy hover:text-emerald font-medium flex items-center justify-center" onClick={e => e.preventDefault()}>
+            <a
+              href="https://www.instagram.com/bisma.abayas"
+              className="text-navy hover:text-emerald font-medium flex items-center justify-center"
+              onClick={(e) => e.preventDefault()}
+            >
               @bisma.abayas <ArrowRightIcon size={16} className="ml-1" />
             </a>
           </div>
         </div>
       </section>
+
       {/* Newsletter */}
       <section className="py-16 bg-cream relative overflow-hidden">
         <div className="absolute inset-0 islamic-pattern opacity-10"></div>
@@ -203,7 +345,11 @@ const HomePage = () => {
               modest fashion tips.
             </p>
             <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-              <input type="email" placeholder="Your email address" className="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald" />
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald"
+              />
               <button className="btn bg-emerald text-white hover:bg-emerald-light whitespace-nowrap">
                 Subscribe
               </button>
@@ -211,6 +357,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-    </div>;
+    </div>
+  );
 };
+
 export default HomePage;
