@@ -9,7 +9,7 @@ interface ProductCardProps {
   price: number;
   originalPrice?: number;
   image: string;
-  rating?: number; // Made optional to handle undefined cases
+  rating?: number;
   isNew?: boolean;
   isBestseller?: boolean;
   sku: string;
@@ -43,13 +43,21 @@ class ProductCardErrorBoundary extends Component<{ children: ReactNode }, ErrorB
   }
 }
 
+// Utility function to format numbers with commas
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('en-KE', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(price);
+};
+
 const ProductCard: React.FC<ProductCardProps> = ({
   id,
   name,
   price,
   originalPrice,
   image,
-  rating = 0, // Default to 0 if undefined
+  rating = 0,
   isNew = false,
   isBestseller = false,
   sku,
@@ -166,11 +174,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {/* Price */}
           <div className="flex items-center">
             <span className="font-semibold text-burgundy">
-              Ksh {(price || 0).toFixed(2)}
+              Ksh {formatPrice(price || 0)}
             </span>
             {originalPrice && originalPrice > price && (
               <span className="ml-2 text-sm text-gray-500 line-through">
-                Ksh {(originalPrice || 0).toFixed(2)}
+                Ksh {formatPrice(originalPrice || 0)}
               </span>
             )}
           </div>

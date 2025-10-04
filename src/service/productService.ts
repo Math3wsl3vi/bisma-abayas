@@ -137,8 +137,8 @@ export class ProductsService {
       id: dbProduct.id,
       name: dbProduct.name,
       description: dbProduct.description,
-      price: dbProduct.price / 100, // Convert from cents to dollars
-      originalPrice: dbProduct.original_price ? dbProduct.original_price / 100 : undefined,
+      price: dbProduct.price, // Convert from cents to dollars
+      originalPrice: dbProduct.original_price ? dbProduct.original_price: undefined,
       images: dbProduct.images || [dbProduct.image_url].filter(Boolean),
       category: dbProduct.category,
       subcategory: dbProduct.subcategory,

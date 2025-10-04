@@ -179,13 +179,13 @@ const HomePage = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-6 md:mb-0">
               <h2 className="font-serif text-2xl md:text-3xl mb-2">
-                Ramadan Collection 2023
+                Ramadan Collection 2025
               </h2>
               <p className="text-gray-200">
                 Elegant modest wear for the holy month
               </p>
             </div>
-            <Link to="/collections/ramadan" className="btn bg-gold text-navy hover:bg-gold-light">
+            <Link to="/collections" className="btn bg-gold text-navy hover:bg-gold-light">
               Shop the Collection
             </Link>
           </div>
@@ -320,11 +320,13 @@ const HomePage = () => {
           <div className="mt-6 text-center">
             <a
               href="https://www.instagram.com/bisma.abayas"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-navy hover:text-emerald font-medium flex items-center justify-center"
-              onClick={(e) => e.preventDefault()}
             >
               @bisma.abayas <ArrowRightIcon size={16} className="ml-1" />
             </a>
+
           </div>
         </div>
       </section>
@@ -335,7 +337,7 @@ const HomePage = () => {
         <div className="container-custom relative z-10">
           <div className="max-w-2xl mx-auto text-center">
             <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center mx-auto mb-6">
-              <span className="text-navy font-serif text-2xl">ME</span>
+              <span className="text-navy font-serif text-2xl">BA</span>
             </div>
             <h2 className="font-serif text-2xl md:text-3xl text-navy mb-4">
               Subscribe to Our Newsletter

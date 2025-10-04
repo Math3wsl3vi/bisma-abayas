@@ -132,7 +132,7 @@ const Header = () => {
                 <SearchIcon size={18} />
               </button>
               {isSearchDropdownOpen && (
-                <div className="absolute top-full left-0 right-0 bg-white shadow-md rounded-md mt-1 z-10 max-h-80 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 bg-white shadow-md rounded-md mt-1 z-50 max-h-80 overflow-y-auto">
                   {isLoading ? (
                     <div className="p-4 text-center">
                       <div className="w-6 h-6 border-4 border-navy border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>

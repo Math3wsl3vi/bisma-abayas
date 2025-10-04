@@ -14,13 +14,21 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
     name: '',
     description: '',
     image_url: '',
+    images: [] as string[],
     price: 0,
-    size: '',
-    color: '',
+    original_price: 0,
     brand: '',
     category: '',
+    subcategory: '',
+    material: '',
+    sizes: [] as string[],
+    colors: [] as string[],
     stock: 0,
     is_new: false,
+    is_bestseller: false,
+    rating: 0,
+    reviews: 0,
+    sku: '',
   });
 
   useEffect(() => {
@@ -29,13 +37,21 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
         name: product.name,
         description: product.description || '',
         image_url: product.image_url,
+        images: product.images || [],
         price: product.price,
-        size: product.specs?.size || '',
-        color: product.specs?.color || '',
-        brand: product.brand,
+        original_price: product.original_price || product.price,
+        brand: product.brand || '',
         category: product.category,
+        subcategory: product.subcategory || '',
+        material: product.material || '',
+        sizes: product.sizes || [],
+        colors: product.colors || [],
         stock: product.stock,
         is_new: product.is_new,
+        is_bestseller: product.is_bestseller || false,
+        rating: product.rating || 0,
+        reviews: product.reviews || 0,
+        sku: product.sku || '',
       });
     }
   }, [product]);
@@ -47,16 +63,25 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
       name: formData.name,
       description: formData.description,
       image_url: formData.image_url,
+      images: formData.images,
       price: formData.price,
-      specs: {
-        size: formData.size || undefined,
-        color: formData.color || undefined,
-      },
+      original_price: formData.original_price,
       brand: formData.brand,
       category: formData.category,
+      subcategory: formData.subcategory,
+      material: formData.material,
+      sizes: formData.sizes,
+      colors: formData.colors,
       stock: formData.stock,
       is_new: formData.is_new,
-      colors: [], // Empty array, as colors is deprecated
+      is_bestseller: formData.is_bestseller,
+      rating: formData.rating,
+      reviews: formData.reviews,
+      sku: formData.sku,
+      specs: {
+        size: formData.sizes.length > 0 ? formData.sizes[0] : undefined,
+        color: formData.colors.length > 0 ? formData.colors[0] : undefined,
+      },
     };
 
     try {
@@ -71,9 +96,31 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
     }
   };
 
+  const handleImageUrlChange = (value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      image_url: value,
+      images: value ? [value] : [] // Also populate images array
+    }));
+  };
+
+  const handleSizesChange = (value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      sizes: value ? value.split(',').map(s => s.trim()) : [] 
+    }));
+  };
+
+  const handleColorsChange = (value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      colors: value ? value.split(',').map(c => c.trim()) : [] 
+    }));
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-xl font-semibold">
             {product ? 'Edit Product' : 'Add New Product'}
@@ -91,6 +138,7 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Product Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Product Name *
@@ -104,7 +152,22 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
               />
             </div>
 
+            {/* SKU */}
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                SKU
+              </label>
+              <input
+                type="text"
+                value={formData.sku}
+                onChange={(e) => setFormData(prev => ({ ...prev, sku: e.target.value }))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., HIJ-SLK-EMR-001"
+              />
+            </div>
+
+            {/* Image URL */}
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Image URL *
               </label>
@@ -112,26 +175,42 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                 type="url"
                 required
                 value={formData.image_url}
-                onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
+                onChange={(e) => handleImageUrlChange(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="https://example.com/image.jpg"
               />
             </div>
 
+            {/* Price */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price ($) *
+                Price (Ksh) *
               </label>
               <input
                 type="number"
                 required
                 min="0"
-                step="0.01"
                 value={formData.price}
                 onChange={(e) => setFormData(prev => ({ ...prev, price: Number(e.target.value) }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
+            {/* Original Price */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Original Price (Ksh)
+              </label>
+              <input
+                type="number"
+                min="0"
+                value={formData.original_price}
+                onChange={(e) => setFormData(prev => ({ ...prev, original_price: Number(e.target.value) }))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Stock */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Stock *
@@ -146,32 +225,49 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
               />
             </div>
 
+            {/* Material */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Size
+                Material
               </label>
               <input
                 type="text"
-                placeholder="e.g., M, L, XL"
-                value={formData.size}
-                onChange={(e) => setFormData(prev => ({ ...prev, size: e.target.value }))}
+                value={formData.material}
+                onChange={(e) => setFormData(prev => ({ ...prev, material: e.target.value }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., 100% Silk"
               />
             </div>
 
+            {/* Sizes */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Color
+                Sizes
               </label>
               <input
                 type="text"
-                placeholder="e.g., Emerald Green"
-                value={formData.color}
-                onChange={(e) => setFormData(prev => ({ ...prev, color: e.target.value }))}
+                value={formData.sizes.join(', ')}
+                onChange={(e) => handleSizesChange(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., S, M, L, XL (comma separated)"
               />
             </div>
 
+            {/* Colors */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Colors
+              </label>
+              <input
+                type="text"
+                value={formData.colors.join(', ')}
+                onChange={(e) => handleColorsChange(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., Black, Navy, Cream (comma separated)"
+              />
+            </div>
+
+            {/* Brand */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Brand *
@@ -190,6 +286,7 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
               </select>
             </div>
 
+            {/* Category */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Category *
@@ -201,40 +298,101 @@ export function ProductForm({ product, onClose }: ProductFormProps) {
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select Category</option>
-                <option value="hijab">Hijab</option>
-                <option value="abaya">Abaya</option>
+                <option value="hijabs">Hijabs</option>
+                <option value="abayas">Abayas</option>
+                <option value="underscarves">Underscarves</option>
                 <option value="accessories">Accessories</option>
-                <option value="other">Other</option>
+                <option value="modest-wear">Modest Wear</option>
               </select>
+            </div>
+
+            {/* Subcategory */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Subcategory
+              </label>
+              <input
+                type="text"
+                value={formData.subcategory}
+                onChange={(e) => setFormData(prev => ({ ...prev, subcategory: e.target.value }))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., silk, chiffon, casual"
+              />
+            </div>
+
+            {/* Rating */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Rating
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="5"
+                step="0.1"
+                value={formData.rating}
+                onChange={(e) => setFormData(prev => ({ ...prev, rating: Number(e.target.value) }))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Reviews */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Reviews Count
+              </label>
+              <input
+                type="number"
+                min="0"
+                value={formData.reviews}
+                onChange={(e) => setFormData(prev => ({ ...prev, reviews: Number(e.target.value) }))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           </div>
 
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description
+              Description *
             </label>
             <textarea
+              required
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              rows={3}
+              rows={4}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Product description..."
             />
           </div>
 
-          {/* New Product Toggle */}
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="isNew"
-              checked={formData.is_new}
-              onChange={(e) => setFormData(prev => ({ ...prev, is_new: e.target.checked }))}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-            />
-            <label htmlFor="isNew" className="ml-2 text-sm text-gray-700">
-              Mark as New Product
-            </label>
+          {/* Toggles */}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="isNew"
+                checked={formData.is_new}
+                onChange={(e) => setFormData(prev => ({ ...prev, is_new: e.target.checked }))}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="isNew" className="ml-2 text-sm text-gray-700">
+                New Product
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="isBestseller"
+                checked={formData.is_bestseller}
+                onChange={(e) => setFormData(prev => ({ ...prev, is_bestseller: e.target.checked }))}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="isBestseller" className="ml-2 text-sm text-gray-700">
+                Bestseller
+              </label>
+            </div>
           </div>
 
           <div className="flex justify-end gap-3 pt-6 border-t">

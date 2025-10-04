@@ -2,25 +2,34 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { supabaseAdmin } from '../lib/supabase';
 
+// In your adminStore.ts, update the Product interface
 export interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
+  original_price?: number; // Add this
   image_url: string;
+  images: string[]; // Make this required
   specs: {
     size?: string;
     color?: string;
   };
   brand: string;
   category: string;
+  subcategory?: string; // Add this
+  material?: string; // Add this
+  sizes: string[]; // Add this
   colors: string[];
   stock: number;
   is_new: boolean;
+  is_bestseller?: boolean; // Add this
+  rating?: number; // Add this
+  reviews?: number; // Add this
+  sku?: string; // Add this
   is_active: boolean;
   created_at: string;
 }
-
 export interface Order {
   id: string;
   customer_id?: string;
@@ -83,10 +92,11 @@ export const useAdminStore = create<AdminStore>()(
         try {
           const { data, error } = await supabaseAdmin
             .from('products')
-            .select('id, name, description, price, image_url, specs, brand, category, colors, stock, is_new, is_active, created_at')
+            .select('*') // Use * to get all fields
             .order('created_at', { ascending: false });
 
           if (error) throw new Error(`Failed to fetch products: ${error.message}`);
+          console.log('Fetched products:', data);
           set({ products: data || [] });
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Failed to fetch products';
@@ -125,32 +135,63 @@ export const useAdminStore = create<AdminStore>()(
         }
       },
 
-      updateProduct: async (id, productData) => {
-        set({ loading: true, error: null });
-        try {
-          const { data, error } = await supabaseAdmin
-            .from('products')
-            .update(productData)
-            .eq('id', id)
-            .select()
-            .single();
+        updateProduct: async (id, productData) => {
+          set({ loading: true, error: null });
+          try {
+            console.log('Updating product:', id, productData);
+            
+            const { data, error } = await supabaseAdmin
+              .from('products')
+              .update(productData)
+              .eq('id', id)
+              .select();
 
-          if (error) throw new Error(`Failed to update product: ${error.message}`);
+            if (error) {
+              console.error('Supabase update error:', error);
+              throw new Error(`Failed to update product: ${error.message}`);
+            }
 
-          set((state) => ({
-            products: state.products.map((p) =>
-              p.id === id ? { ...p, ...data } : p
-            ),
-          }));
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Failed to update product';
-          set({ error: errorMessage });
-          console.error('Error updating product:', error);
-          throw error;
-        } finally {
-          set({ loading: false });
-        }
-      },
+            console.log('Update response data:', data);
+
+            if (!data || data.length === 0) {
+              // If no data returned, fetch the product separately to verify update
+              const { data: fetchedProduct, error: fetchError } = await supabaseAdmin
+                .from('products')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+              if (fetchError) {
+                throw new Error(`Product update may have succeeded but failed to fetch updated product: ${fetchError.message}`);
+              }
+
+              if (!fetchedProduct) {
+                throw new Error('Product not found after update - the product may have been deleted');
+              }
+
+              // Use the fetched product data
+              set((state) => ({
+                products: state.products.map((p) =>
+                  p.id === id ? { ...p, ...fetchedProduct } : p
+                ),
+              }));
+            } else {
+              // Use the returned data
+              set((state) => ({
+                products: state.products.map((p) =>
+                  p.id === id ? { ...p, ...data[0] } : p
+                ),
+              }));
+            }
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to update product';
+            set({ error: errorMessage });
+            console.error('Error updating product:', error);
+            throw error;
+          } finally {
+            set({ loading: false });
+          }
+        },
 
       deleteProduct: async (id) => {
         set({ loading: true, error: null });
@@ -328,7 +369,7 @@ export const useAdminStore = create<AdminStore>()(
             // Refresh products in the store
             const { data: updatedProducts } = await supabaseAdmin
               .from('products')
-              .select('id, name, description, price, image_url, specs, brand, category, colors, stock, is_new, is_active, created_at')
+              .select('id, name, description, price, original_price, image_url, images, specs, brand, category, subcategory, material, sizes, colors, stock, is_new, is_bestseller, rating, reviews, sku, is_active, created_at')
               .order('created_at', { ascending: false });
 
             if (updatedProducts) {

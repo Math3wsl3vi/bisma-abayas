@@ -285,7 +285,7 @@ export function AdminDashboard({ onShowProductForm, onEditProduct }: AdminDashbo
                           <div className="flex items-center">
                             <img
                               className="h-10 w-10 rounded-lg object-cover"
-                              src={product.image_url}
+                              src={product.images?.[0] || product.image_url || '/placeholder-image.jpg'}
                               alt={product.name}
                             />
                             <div className="ml-4">
