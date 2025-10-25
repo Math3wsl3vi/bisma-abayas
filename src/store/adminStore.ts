@@ -95,7 +95,7 @@ export const useAdminStore = create<AdminStore>()(
             .select('*') // Use * to get all fields
             .order('created_at', { ascending: false });
 
-          if (error) throw new Error(`Failed to fetch products: ${error.message}`);
+          if (error) throw new Error(`Failed to fetch products: ${error.message}`); 
           console.log('Fetched products:', data);
           set({ products: data || [] });
         } catch (error) {

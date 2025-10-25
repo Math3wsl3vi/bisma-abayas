@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 flex justify-center">
             <div className="bg-navy px-6">
               <div className="w-12 h-12 rounded-full bg-gold flex items-center justify-center">
-                <span className="text-navy font-serif text-lg">BA</span>
+                <span className="text-navy font-serif text-lg">ZC</span>
               </div>
             </div>
           </div>

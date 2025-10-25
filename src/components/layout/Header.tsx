@@ -105,11 +105,11 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="w-10 h-10 rounded-full bg-emerald flex items-center justify-center">
-              <span className="text-white font-serif text-lg">BA</span>
+              <span className="text-white font-serif text-lg">ZC</span>
             </div>
             <div className="ml-2">
               <h1 className="font-serif text-xl md:text-2xl text-navy">
-                Bisma Abayas
+               Zahra Couture
               </h1>
               <p className="text-xs text-gray-500">Handmade with love</p>
             </div>
